@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class rocket : MonoBehaviour
 {
@@ -8,6 +9,11 @@ public class rocket : MonoBehaviour
     AudioSource audioSource;  
     [SerializeField] float upThrust = 100f;
     [SerializeField]float rcsThrust = 100f;
+    [SerializeField] AudioClip mainEngine;
+    [SerializeField] AudioClip death;
+    [SerializeField] AudioClip success;
+    enum State  {Alive, tonextlevel, dead};
+    State state = State.Alive;
     
     
       // Start is called before the first frame update
@@ -19,40 +25,60 @@ public class rocket : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
-    {
-        Thrust();
-        Rotate();
+    void Update(){
+         if (state == State.Alive){
+            Thrust();
+            Rotate();
+
+        }
     }
+   
     void OnCollisionEnter(Collision collision)
     {
+        if (state != State.Alive){
+            return;
+        }
         switch(collision.gameObject.tag)
         {
             case "friend":
-                print("ok");
+                
             break;
             case "Finish":
-                print("Finish");
-            break;
-            case "refuel":
-                print("refuel");
+                state = State.tonextlevel;
+                audioSource.Stop();
+                audioSource.PlayOneShot(success);
+                Invoke("loadNextlvl" ,1f);
             break;
             default:
-                print("dead");
+                state = State.dead;
+                audioSource.Stop();
+                audioSource.PlayOneShot(death);
+                Invoke("deadlvl", 1f);
                 break;
         }
     }
     
+    private void loadNextlvl(){
+        SceneManager.LoadScene(1);
+    }
+
+    private void deadlvl(){
+        SceneManager.LoadScene(0);
+    }
     private void Thrust(){
         
         float upThrustForce = upThrust * Time.deltaTime;
         if (Input.GetKey(KeyCode.Space))
         {
             rigidbody.AddRelativeForce(Vector3.up * upThrustForce);
+            audioSource.PlayOneShot(mainEngine);
         }
-        if (!audioSource.isPlaying)
+        /*if (!audioSource.isPlaying)
         {
-            audioSource.Play();
+            audioSource.PlayOneShot(mainEngine);
+        }*/
+        else{
+            audioSource.Stop();
         }
        
     }

@@ -251,6 +251,12 @@ MonoBehaviour:
   mainEngine: {fileID: 8300000, guid: 841f79acca7562f43bdf3d1c694df3c2, type: 3}
   death: {fileID: 8300000, guid: 97abb98aace67074f86f5a25c2deadaa, type: 3}
   success: {fileID: 8300000, guid: 4adac83706b2ec54da1cdd10b0bd6f1b, type: 3}
+  engineParticle: {fileID: 198100719057022332, guid: a3553fd250eb92d4091bebde350c6739,
+    type: 3}
+  deathParticle: {fileID: 198204746014789312, guid: ab79a37535b979f48b6de56e3a0a5cb0,
+    type: 3}
+  successParticle: {fileID: 198631066050499358, guid: 62198a3a5dbb64a4f9e1618929224faa,
+    type: 3}
 --- !u!82 &6101986235357015
 AudioSource:
   m_ObjectHideFlags: 0

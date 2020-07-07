@@ -12,6 +12,9 @@ public class rocket : MonoBehaviour
     [SerializeField] AudioClip mainEngine;
     [SerializeField] AudioClip death;
     [SerializeField] AudioClip success;
+    [SerializeField] ParticleSystem engineParticle;
+    [SerializeField] ParticleSystem deathParticle;
+    [SerializeField] ParticleSystem successParticle;
     enum State  {Alive, tonextlevel, dead};
     State state = State.Alive;
     
@@ -47,12 +50,15 @@ public class rocket : MonoBehaviour
                 state = State.tonextlevel;
                 audioSource.Stop();
                 audioSource.PlayOneShot(success);
+                successParticle.Play();
+                
                 Invoke("loadNextlvl" ,1f);
             break;
             default:
                 state = State.dead;
                 audioSource.Stop();
                 audioSource.PlayOneShot(death);
+                deathParticle.Play();
                 Invoke("deadlvl", 1f);
                 break;
         }
@@ -72,6 +78,7 @@ public class rocket : MonoBehaviour
         {
             rigidbody.AddRelativeForce(Vector3.up * upThrustForce);
             audioSource.PlayOneShot(mainEngine);
+            engineParticle.Play();
         }
         /*if (!audioSource.isPlaying)
         {
